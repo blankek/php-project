@@ -1,0 +1,2 @@
+App\Models\Post::factory()->count(10)->create();
+q
