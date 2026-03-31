@@ -1,2 +1,7 @@
 App\Models\Post::factory()->count(10)->create();
 q
+\App\Models\Post::create(['title' => 'Тестовая новость 1', 'content' => 'Текст новости 1', 'status' => 'pending']);
+\App\Models\Post::create(['title' => 'Тестовая новость 2', 'content' => 'Текст новости 2', 'status' => 'pending']);
+exit
+\App\Models\Post::create(['title' => 'Ура, база работает!', 'content' => 'Текст новости', 'status' => 'pending']);
+exit

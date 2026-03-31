@@ -12,5 +12,17 @@ class Post extends Model
     protected $fillable = [
         'title',
         'content',
+        'status',
+        'published_at',
     ];
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', 'published');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
 }
