@@ -15,24 +15,29 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-light bg-white border-bottom py-3">
-        <div class="container">
-            <a href="{{ route('news.index') }}" class="navbar-brand fw-bold text-primary mb-0 h1 text-decoration-none">
-                <i class="fas fa-newspaper me-2"></i>DobroNews
-            </span>
+<nav class="navbar navbar-light bg-white border-bottom py-3">
+    <div class="container">
+        <a href="{{ route('news.index') }}" class="navbar-brand fw-bold text-primary mb-0 h1 text-decoration-none">
+            <i class="fas fa-newspaper me-2"></i>DobroNews
+        </a>
+        <div class="d-flex gap-3">
+            <a href="{{ route('profile.index') }}" class="btn btn-primary rounded-pill">
+                <i class="fas fa-user me-1"></i>Профиль
+            </a>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <main class="container py-4">
-        @if(session('success'))
-            <div class="alert alert-success border-0 rounded-0 mb-4">{{ session('success') }}</div>
-        @endif
-        @if(session('info'))
-            <div class="alert alert-info border-0 rounded-0 mb-4">{{ session('info') }}</div>
-        @endif
-        @yield('content')
-    </main>
+<main class="container py-4">
+    @if(session('success'))
+        <div class="alert alert-success border-0 rounded-0 mb-4">{{ session('success') }}</div>
+    @endif
+    @if(session('info'))
+        <div class="alert alert-info border-0 rounded-0 mb-4">{{ session('info') }}</div>
+    @endif
+    @yield('content')
+</main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
