@@ -23,3 +23,8 @@ Post::factory()->count(5)->state(['status' => 'pending'])->create();
 exit
 Post::factory()->count(5)->state(['status' => 'draft'])->create();
 exit
+Post::factory()->count(10)->create(['status' => 'published']);
+exit
+Post::factory()->count(10)->create(['status' => 'published']);
+exit
+Post::factory()->count(10)->create(['status' => 'published']);
