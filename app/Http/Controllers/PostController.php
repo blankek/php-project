@@ -7,9 +7,6 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index() 
     {
         $posts = Post::where('status', 'published')
@@ -19,10 +16,14 @@ class PostController extends Controller
         return response()->json($posts);
     }
 
+    public function create()
+    {
+        $drafts = Post::draft()->latest()->get();
+        $pendingPosts = Post::pending()->latest()->get();
 
-    /**
-     * Store a newly created resource in storage.
-     */
+        return view('news.create', compact('drafts', 'pendingPosts'));
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -31,19 +32,35 @@ class PostController extends Controller
             'picture' => 'nullable|file|image', 
         ]);
 
-        $post = Post::create(array_merge($validated, [
-            'status' => 'draft', 
+        $picturePath = null;
+        if ($request->hasFile('picture')) {
+            $picturePath = $request->file('picture')->store('posts', 'public');
+        }
+
+        $status = $request->input('action') === 'moderation' ? 'pending' : 'draft';
+
+        $post = Post::create([
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+            'picture' => $picturePath,
+            'status' => $status, 
             'likes' => 0,
             'comments' => 0,
             'published_at' => null,
-        ]));
+        ]);
 
-        return response()->json($post, 201);
+         $message = $status === 'pending' ? 'Новость отправлена на модерацию!' : 'Новость сохранена как черновик!';
+
+        return back()->with('success', $message);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    public function submit(Post $post)
+    {
+        $post->update(['status' => 'pending']);
+
+        return back()->with('success', 'Новость отправлена на модерацию!');
+    }
+
     public function show($id)
     {
         $post = Post::where('id', $id)
@@ -55,7 +72,7 @@ class PostController extends Controller
 
     public function newsPage()
     {
-        $posts = Post::where('status', 'published')
+        $posts = Post::published()
             ->with(['postComments.user'])
             ->orderBy('published_at', 'desc')
             ->get();

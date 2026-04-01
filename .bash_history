@@ -40,3 +40,7 @@ touch /var/www/database/database.sqlite
 php artisan migrate:fresh
 php artisan tinker
 exit
+php artisan migrate
+php artisan migrate
+php artisan tinker
+exit

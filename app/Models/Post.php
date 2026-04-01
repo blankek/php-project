@@ -42,4 +42,9 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class)->latest();
     }
+
+    public function scopeDraft($query)
+    {
+        return $query->where('status', 'draft');
+    }
 }
