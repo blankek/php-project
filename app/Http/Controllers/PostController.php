@@ -19,7 +19,9 @@ class PostController extends Controller
     public function create()
     {
         $drafts = Post::draft()->latest()->get();
-        return view('news.create', compact('drafts'));
+        $pendingPosts = Post::pending()->latest()->get();
+
+        return view('news.create', compact('drafts', 'pendingPosts'));
     }
 
     public function store(Request $request)
@@ -35,13 +37,13 @@ class PostController extends Controller
             $picturePath = $request->file('picture')->store('posts', 'public');
         }
 
-        $status = $request->has('submit_moderation') ? 'pending' : 'draft';
+        $status = $request->input('action') === 'moderation' ? 'pending' : 'draft';
 
         $post = Post::create([
             'title' => $validated['title'],
             'content' => $validated['content'],
             'picture' => $picturePath,
-            'status' => 'draft', 
+            'status' => $status, 
             'likes' => 0,
             'comments' => 0,
             'published_at' => null,

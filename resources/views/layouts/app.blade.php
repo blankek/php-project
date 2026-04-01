@@ -17,7 +17,7 @@
 <body>
     <nav class="navbar navbar-light bg-white border-bottom py-3">
         <div class="container">
-            <span class="navbar-brand fw-bold text-primary mb-0 h1">
+            <a href="{{ route('news.index') }}" class="navbar-brand fw-bold text-primary mb-0 h1 text-decoration-none">
                 <i class="fas fa-newspaper me-2"></i>NewsAdmin
             </span>
         </div>

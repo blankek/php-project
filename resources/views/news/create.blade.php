@@ -8,7 +8,7 @@
                 <h4 class="mb-0 fw-bold">Создать новость</h4>
             </div>
             <div class="card-body p-4">
-                <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data" id="news-form">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label fw-bold">Заголовок</label>
@@ -23,8 +23,8 @@
                         <input type="file" name="picture" class="form-control">
                     </div>
                     <div class="d-flex gap-2">
-                        <button type="submit" name="save_draft" class="btn btn-outline-primary px-4">Сохранить черновик</button>
-                        <button type="submit" name="submit_moderation" class="btn btn-primary px-4">Отправить на модерацию</button>
+                        <button type="submit" name="action" value="draft" class="btn btn-outline-primary px-4">Сохранить черновик</button>
+                        <button type="submit" name="action" value="moderation" class="btn btn-primary px-4">Отправить на модерацию</button>
                         <a href="{{ route('news.index') }}" class="btn btn-link text-muted px-3">Отмена</a>
                     </div>
                 </form>
@@ -33,7 +33,8 @@
     </div>
 
     <div class="col-lg-4">
-        <div class="card border-0">
+        <!-- Черновики -->
+        <div class="card border-0 mb-4">
             <div class="card-header bg-white py-3 border-bottom">
                 <h5 class="mb-0 fw-bold">Ваши черновики</h5>
             </div>
@@ -53,8 +54,30 @@
                         </div>
                     </div>
                 @empty
-                    <div class="text-center py-4">
-                        <p class="text-muted small mb-0">У вас пока нет черновиков.</p>
+                    <div class="text-center py-2">
+                        <p class="text-muted small mb-0">Черновиков нет.</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- На модерации -->
+        <div class="card border-0">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="mb-0 fw-bold">На модерации</h5>
+            </div>
+            <div class="card-body p-4">
+                @forelse ($pendingPosts as $pending)
+                    <div class="mb-3 border-bottom pb-2">
+                        <h6 class="fw-bold mb-1 text-muted">{{ $pending->title }}</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-light text-dark fw-normal">Ожидает проверки</span>
+                            <span class="text-muted small">{{ $pending->created_at->format('d.m.Y') }}</span>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center py-2">
+                        <p class="text-muted small mb-0">Пусто.</p>
                     </div>
                 @endforelse
             </div>
