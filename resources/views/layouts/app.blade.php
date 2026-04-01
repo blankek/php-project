@@ -24,6 +24,12 @@
             <a href="{{ route('profile.index') }}" class="btn btn-primary rounded-pill">
                 <i class="fas fa-user me-1"></i>Профиль
             </a>
+            @auth
+                <form  method="get" action="{{ route('logout') }}" >
+                    @csrf
+                    <button class="btn btn-primary rounded-pill" type="submit" >Выйти</button>
+                </form>
+            @endauth
         </div>
     </div>
 </nav>
