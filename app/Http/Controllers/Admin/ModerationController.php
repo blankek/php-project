@@ -22,9 +22,9 @@ class ModerationController extends Controller{
 
     public function reject(Post $post){
         $post->update([
-            'status' => 'draft',
+            'status' => 'rejected',
         ]);
 
-        return back()->with('info', 'Новость возвращена на доработку');
+        return back()->with('info', 'Новость послана нахуй');
     }
 }

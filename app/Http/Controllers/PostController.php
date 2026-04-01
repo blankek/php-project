@@ -12,7 +12,11 @@ class PostController extends Controller
      */
     public function index() 
     {
-        return response()->json(Post::all());
+        $posts = Post::where('status', 'published')
+                    ->orderBy('published_at', 'desc')
+                    ->get();
+
+        return response()->json($posts);
     }
 
 
@@ -21,7 +25,20 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'picture' => 'nullable|file|image', 
+        ]);
+
+        $post = Post::create(array_merge($validated, [
+            'status' => 'draft', 
+            'likes' => 0,
+            'comments' => 0,
+            'published_at' => null,
+        ]));
+
+        return response()->json($post, 201);
     }
 
     /**
@@ -29,22 +46,22 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Post::findOrFail($id));
+        $post = Post::where('id', $id)
+                    ->where('status', 'published')
+                    ->firstOrFail();
+
+        return response()->json($post);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function newsPage()
     {
-        //
+        // Получаем все опубликованные новости
+        $posts = Post::where('status', 'published')
+                    ->orderBy('published_at', 'desc')
+                    ->get();
+
+        return view('news.index', compact('posts'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+
 }

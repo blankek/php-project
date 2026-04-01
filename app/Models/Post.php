@@ -14,6 +14,17 @@ class Post extends Model
         'content',
         'status',
         'published_at',
+        'likes',
+        'comments',
+        'picture',
+    ];
+
+    protected $dates = [
+        'published_at',
+    ];
+
+    protected $casts = [
+        'published_at' => 'datetime',
     ];
 
     public function scopePublished($query)
