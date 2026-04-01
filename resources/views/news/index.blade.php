@@ -7,7 +7,10 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mb-4">Новости</h1>
+    <div style="display: flex; ">
+        <h1 class="mb-4">Новости</h1>
+    </div>
+
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif

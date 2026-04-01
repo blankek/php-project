@@ -11,12 +11,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['login', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    protected $fillable = [
+        'login',
+        'password',
+        'role',
+    ];
+// Константы для ролей
+    public const ROLE_READER = 'reader';
+    public const ROLE_EDITOR = 'editor';
+    public const ROLE_ADMIN = 'admin';
 
     /**
      * Get the attributes that should be cast.
@@ -26,9 +36,43 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => 'string',
         ];
+    }
+
+    public function username()
+    {
+        return 'login'; // its поле для аутентификации
+    }
+    public function isReader(): bool
+    {
+        // является ли это существо читателем
+        return $this->role === self::ROLE_READER;
+    }
+
+    public function isEditor(): bool
+    {
+        // является ли пользователь редактором
+        return $this->role === self::ROLE_EDITOR;
+    }
+
+    public function isAdmin(): bool
+    {
+        // является ли пользователь админом
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function canEdit(): bool
+    {
+        // имеет ли пользователь доступ на редактирование
+        return $this->isEditor() || $this->isAdmin();
+    }
+
+    public function canManage(): bool
+    {
+        // имеет ли админ доступ
+        return $this->isAdmin();
     }
 
     public function postComments(): HasMany
