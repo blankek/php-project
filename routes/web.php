@@ -2,13 +2,20 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ModerationController;
-    use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PostController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/news', [PostController::class, 'newsPage']);
+Route::post('/news/{post}/comments', [CommentController::class, 'store'])
+    ->middleware('auth')
+    ->name('comments.store');
+Route::delete('/news/{post}/comments/{comment}', [CommentController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('comments.destroy');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     

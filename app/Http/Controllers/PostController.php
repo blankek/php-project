@@ -55,10 +55,10 @@ class PostController extends Controller
 
     public function newsPage()
     {
-        // Получаем все опубликованные новости
         $posts = Post::where('status', 'published')
-                    ->orderBy('published_at', 'desc')
-                    ->get();
+            ->with(['postComments.user'])
+            ->orderBy('published_at', 'desc')
+            ->get();
 
         return view('news.index', compact('posts'));
     }

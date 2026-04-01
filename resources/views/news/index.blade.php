@@ -8,6 +8,9 @@
 <body>
 <div class="container mt-5">
     <h1 class="mb-4">Новости</h1>
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
     @forelse ($posts as $post)
         <div class="card mb-3">
@@ -25,6 +28,51 @@
                 <p class="card-text">
                     👍 {{ $post->likes ?? 0 }} | 💬 {{ $post->comments ?? 0 }}
                 </p>
+
+                <hr>
+                <h6>Комментарии</h6>
+                @forelse ($post->postComments as $comment)
+                    <div class="border rounded p-2 mb-2">
+                        <div class="small text-muted mb-1">
+                            {{ $comment->user->name ?? 'Пользователь' }}
+                            · {{ $comment->created_at->format('d.m.Y H:i') }}
+                        </div>
+                        <div>{{ $comment->body }}</div>
+
+                        @auth
+                            @if(auth()->id() === $comment->user_id)
+                                <form action="{{ route('comments.destroy', ['post' => $post, 'comment' => $comment]) }}" method="POST" class="mt-2">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                                </form>
+                            @endif
+                        @endauth
+                    </div>
+                @empty
+                    <p class="text-muted">Комментариев пока нет.</p>
+                @endforelse
+
+                @auth
+                    <form action="{{ route('comments.store', $post) }}" method="POST" class="mt-3">
+                        @csrf
+                        <div class="mb-2">
+                            <textarea
+                                name="body"
+                                class="form-control @error('body') is-invalid @enderror"
+                                rows="3"
+                                placeholder="Оставьте комментарий..."
+                                required
+                            >{{ old('body') }}</textarea>
+                            @error('body')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">Отправить</button>
+                    </form>
+                @else
+                    <p class="text-muted mb-0">Войдите в аккаунт, чтобы оставлять комментарии.</p>
+                @endauth
             </div>
         </div>
     @empty
