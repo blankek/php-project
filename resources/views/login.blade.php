@@ -33,6 +33,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Войти</button>
+        <a href="{{ route('reg') }}" class="btn btn-link">Нет аккаунта? Зарегистрироваться</a>
     </form>
 
 

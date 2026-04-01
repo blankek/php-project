@@ -47,31 +47,26 @@ class User extends Authenticatable
     }
     public function isReader(): bool
     {
-        // является ли это существо читателем
         return $this->role === self::ROLE_READER;
     }
 
     public function isEditor(): bool
     {
-        // является ли пользователь редактором
         return $this->role === self::ROLE_EDITOR;
     }
 
     public function isAdmin(): bool
     {
-        // является ли пользователь админом
         return $this->role === self::ROLE_ADMIN;
     }
 
     public function canEdit(): bool
     {
-        // имеет ли пользователь доступ на редактирование
         return $this->isEditor() || $this->isAdmin();
     }
 
     public function canManage(): bool
     {
-        // имеет ли админ доступ
         return $this->isAdmin();
     }
 

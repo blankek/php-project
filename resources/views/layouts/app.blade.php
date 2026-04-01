@@ -30,6 +30,12 @@
                     <button class="btn btn-primary rounded-pill" type="submit" >Выйти</button>
                 </form>
             @endauth
+            @guest
+                <a href="{{ route('login') }}" class="btn btn-primary rounded-pill">
+                    <i class="fas fa-user me-1"></i>Вход
+                </a>
+
+            @endguest
         </div>
     </div>
 </nav>
