@@ -18,7 +18,7 @@
     <nav class="navbar navbar-light bg-white border-bottom py-3">
         <div class="container">
             <span class="navbar-brand fw-bold text-primary mb-0 h1">
-                <i class="fas fa-newspaper me-2"></i>NewsAdmin
+                <i class="fas fa-newspaper me-2"></i>DobroNews
             </span>
         </div>
     </nav>

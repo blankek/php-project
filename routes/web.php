@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ModerationController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,3 +29,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/moderation/{post}/reject', [ModerationController::class, 'reject'])->name('moderation.reject');
 
 });
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
