@@ -3,7 +3,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use Illuminate\Http\Request;
 
 class ModerationController extends Controller{
     public function index(){
@@ -25,6 +24,6 @@ class ModerationController extends Controller{
             'status' => 'rejected',
         ]);
 
-        return back()->with('info', 'Новость послана нахуй');
+        return back()->with('info', 'Новость возвращена на доработку');
     }
 }
