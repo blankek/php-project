@@ -31,6 +31,7 @@ class User extends Authenticatable
     public const ROLE_READER = 'reader';
     public const ROLE_EDITOR = 'editor';
     public const ROLE_ADMIN = 'admin';
+    public const ROLE_MODERATOR = 'moderator';
 
     public const GENDER_MALE = 'male';
     public const GENDER_FEMALE = 'female';
@@ -71,6 +72,11 @@ class User extends Authenticatable
         return $this->role === self::ROLE_ADMIN;
     }
 
+    public function isModerator(): bool
+    {
+        return $this->role === self::ROLE_MODERATOR;
+    }
+
     public function canEdit(): bool
     {
         return $this->isEditor() || $this->isAdmin();
@@ -95,7 +101,8 @@ class User extends Authenticatable
     {
         return $this->isReader()
             || $this->isEditor()
-            || $this->isAdmin();
+            || $this->isAdmin()
+            || $this->isModerator();
     }
     
     public function getAvatarUrl(): string
@@ -112,3 +119,4 @@ class User extends Authenticatable
         return $this->created_at->format('d.m.Y');
     }
 }
+

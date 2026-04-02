@@ -53,3 +53,14 @@ touch /var/www/database/database.sqlite
 php artisan migrate:fresh
 php artisan tinker
 exit
+php artisan migrate
+php artisan tinker
+php artisan migrate
+php artisan make:migration add_user_id_to_posts_table
+php artisan migrate
+php artisan migrate
+php artisan migrate
+$user = App\Models\User::where('login', 'Gasparo')->first();
+$user->role = 'admin';
+$user->save();
+exit;
