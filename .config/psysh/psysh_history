@@ -28,3 +28,8 @@ exit
 Post::factory()->count(10)->create(['status' => 'published']);
 exit
 Post::factory()->count(10)->create(['status' => 'published']);
+Post::factory()->count(10)->create(['status' => 'published']);
+$user = App\Models\User::where('login', 'Gasparo')->first();
+$user->role = 'editor';
+$user->save();
+exit;

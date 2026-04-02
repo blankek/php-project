@@ -55,9 +55,14 @@ class Post extends Model
         return $this->likesRelation()->where('user_id', $user->id)->exists();
     }
 
-    public function scopeDraft($query)
+     public function scopeDraft($query)
     {
-        return $query->where('status', 'draft');
+        return $query->whereIn('status', ['draft', 'returned']);
+    }
+
+    public function scopeRejected($query)
+    {
+        return $query->where('status', 'rejected');
     }
 
     public function user(): BelongsTo

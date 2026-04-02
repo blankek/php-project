@@ -19,6 +19,8 @@ Route::get('/news', [PostController::class, 'newsPage'])->name('news.index');
 Route::get('/news/create', [PostController::class, 'create'])->name('news.create');
 Route::post('/news', [PostController::class, 'store'])->name('news.store');
 Route::post('/news/{post}/submit', [PostController::class, 'submit'])->name('news.submit');
+Route::get('/news/{post}/edit', [PostController::class, 'edit'])->name('news.edit');
+Route::put('/news/{post}', [PostController::class, 'update'])->name('news.update');
 
 #комменты
 Route::post('/news/{post}/comments', [CommentController::class, 'store'])
@@ -41,13 +43,12 @@ Route::post('/reg', [UserController::class, 'postReg']);
 
 Route::get('/logout', [UserController::class, 'getLogout'])->name('logout');
 
+// админка
 Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation.index');
-
     Route::post('/moderation/{post}/approve', [ModerationController::class, 'approve'])->name('moderation.approve');
     Route::post('/moderation/{post}/reject', [ModerationController::class, 'reject'])->name('moderation.reject');
-
 });
 
 

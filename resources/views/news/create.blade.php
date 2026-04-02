@@ -46,11 +46,19 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="text-muted small">
                                 📅 {{ $draft->created_at->format('d.m.Y') }}
+                                @if($draft->status === 'returned')
+                                    <span class="badge bg-danger ms-1">Возврат от админа</span>
+                                @endif
                             </span>
-                            <form action="{{ route('news.submit', $draft) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-sm btn-outline-primary">На модерацию</button>
-                            </form>
+                            <div class="d-flex gap-1">
+                                <a href="{{ route('news.edit', $draft) }}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('news.submit', $draft) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">На модерацию</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 @empty

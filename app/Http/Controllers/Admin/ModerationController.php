@@ -21,7 +21,7 @@ class ModerationController extends Controller{
 
     public function reject(Post $post){
         $post->update([
-            'status' => 'rejected',
+            'status' => 'returned',
         ]);
 
         return back()->with('info', 'Новость возвращена на доработку');
