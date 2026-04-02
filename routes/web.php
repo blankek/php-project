@@ -6,10 +6,13 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ErrorDemoController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/errors', [ErrorDemoController::class, 'index'])->name('errors.demo');
 
 # новости
 Route::get('/news', [PostController::class, 'newsPage'])->name('news.index');
