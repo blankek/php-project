@@ -37,7 +37,7 @@
                                   onsubmit="return confirm('Удалить пост?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Удалить пост</button>
                             </form>
                         @endif
                     @endauth
@@ -110,7 +110,7 @@
                                     <form action="{{ route('comments.destroy', ['post' => $post, 'comment' => $comment]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-link text-danger p-0 text-decoration-none small">Удалить</button>
+                                        <button type="submit" class="btn btn-link text-danger p-0 text-decoration-none small">Удалить комментарий</button>
                                     </form>
                                 @endif
                             @endauth
