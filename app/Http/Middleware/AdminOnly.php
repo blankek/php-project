@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminOrEditor
+class AdminOnly
 {
     public function handle(Request $request, Closure $next): Response
     {
@@ -15,8 +15,8 @@ class AdminOrEditor
             return redirect()->route('login');
         }
 
-        if (!Auth::user()->canManage() && !Auth::user()->canEdit()) {
-            abort(403, 'У вас нет доступа к этой странице');
+        if (!Auth::user()->isAdmin()) {
+            abort(403, 'У вас нет доступа к этой странице. Только для администраторов.');
         }
 
         return $next($request);
