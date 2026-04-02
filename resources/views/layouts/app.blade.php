@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel News') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -21,10 +22,10 @@
             <i class="fas fa-newspaper me-2"></i>DobroNews
         </a>
         <div class="d-flex gap-3">
-            <a href="{{ route('profile.index') }}" class="btn btn-primary rounded-pill">
-                <i class="fas fa-user me-1"></i>Профиль
-            </a>
             @auth
+                <a href="{{ route('profile.index') }}" class="btn btn-primary rounded-pill">
+                    <i class="fas fa-user me-1"></i>Профиль
+                </a>
                 <form  method="get" action="{{ route('logout') }}" >
                     @csrf
                     <button class="btn btn-primary rounded-pill" type="submit" >Выйти</button>
@@ -34,7 +35,6 @@
                 <a href="{{ route('login') }}" class="btn btn-primary rounded-pill">
                     <i class="fas fa-user me-1"></i>Вход
                 </a>
-
             @endguest
         </div>
     </div>

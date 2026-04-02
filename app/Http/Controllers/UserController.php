@@ -15,24 +15,20 @@ class UserController extends Controller
     }
     public function postLogin(Request $request)
     {
-        // Валидация данных
         $credentials = $request->validate([
             'login'    => ['required'],
             'password' => ['required'],
         ]);
 
-        // Попытка аутентификации
         if (Auth::attempt($credentials, $request->has('remember'))) {
-            // Регенерация сессии для защиты от фиксации
             $request->session()->regenerate();
 
 
             return redirect()->intended('/news');
         }
 
-        // Если аутентификация не удалась – возврат назад с ошибкой
         return back()->withErrors([
-            'login' => 'Неправильный логин или пароль.. или вы неправильный.',
+            'login' => 'Неправильный логин или пароль.. или вы неправильный dont cry.',
         ])->onlyInput('login');
     }
     public function getReg()
@@ -46,11 +42,14 @@ class UserController extends Controller
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
 
-        $user = User::create(array_merge($validated, [
+        $user = User::create([
             'login'    => $validated['login'],
             'password' => Hash::make($validated['password']),
             'role'     => User::ROLE_READER,
-        ]));
+            'gender'   => User::GENDER_MALE,
+            'bio'      => null,
+            'avatar'   => null,
+        ]);
 
         Auth::login($user);
 

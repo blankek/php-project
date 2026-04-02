@@ -44,3 +44,5 @@ php artisan migrate
 php artisan migrate
 php artisan tinker
 exit
+php artisan tinker
+exit

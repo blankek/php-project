@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['login', 'password', 'role'])]
+#[Fillable(['login', 'password', 'role', 'bio', 'gender', 'avatar'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -22,11 +23,17 @@ class User extends Authenticatable
         'login',
         'password',
         'role',
+        'bio',
+        'gender',
+        'avatar',
     ];
-// Константы для ролей
+
     public const ROLE_READER = 'reader';
     public const ROLE_EDITOR = 'editor';
     public const ROLE_ADMIN = 'admin';
+
+    public const GENDER_MALE = 'male';
+    public const GENDER_FEMALE = 'female';
 
     /**
      * Get the attributes that should be cast.
@@ -38,13 +45,17 @@ class User extends Authenticatable
         return [
             'password' => 'hashed',
             'role' => 'string',
+            'bio' => 'string',
+            'gender' => 'string',
+            'avatar' => 'string',
         ];
     }
 
     public function username()
     {
-        return 'login'; // its поле для аутентификации
+        return 'login';
     }
+
     public function isReader(): bool
     {
         return $this->role === self::ROLE_READER;
@@ -73,5 +84,19 @@ class User extends Authenticatable
     public function postComments(): HasMany
     {
         return $this->hasMany(Comment::class)->latest();
+    }
+
+    public function getAvatarUrl(): string
+    {
+        if ($this->avatar && Storage::disk('public')->exists($this->avatar)) {
+            return asset('storage/' . $this->avatar);
+        }
+
+        return asset('images/default-avatar.png');
+    }
+
+    public function getFormattedCreatedAt(): string
+    {
+        return $this->created_at->format('d.m.Y');
     }
 }
