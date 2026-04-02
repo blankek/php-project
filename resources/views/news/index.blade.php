@@ -90,7 +90,13 @@
                     <div class="bg-light rounded-4 p-3 mb-3 border-0">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <div class="small fw-bold text-primary">
-                                {{ $comment->user->login ?? 'Пользователь' }}
+                                @auth
+                                    <a href="{{ route('profile.show', $comment->user) }}" class="text-primary text-decoration-none">
+                                        {{ $comment->user->login ?? 'Пользователь' }}
+                                    </a>
+                                @else
+                                    {{ $comment->user->login ?? 'Пользователь' }}
+                                @endauth
                                 <span class="text-muted fw-normal ms-2">· {{ $comment->created_at->format('d.m.Y H:i') }}</span>
                             </div>
 
