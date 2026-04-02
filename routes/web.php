@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ErrorDemoController;
+use App\Http\Controllers\Admin\AdminUserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -45,9 +46,13 @@ Route::get('/logout', [UserController::class, 'getLogout'])->name('logout');
 
 // админка
 Route::prefix('admin')->name('admin.')->middleware('admin.editor')->group(function () {
+    //посты
     Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation.index');
     Route::post('/moderation/{post}/approve', [ModerationController::class, 'approve'])->name('moderation.approve');
     Route::post('/moderation/{post}/reject', [ModerationController::class, 'reject'])->name('moderation.reject');
+    //роли
+    Route::get('/roles', [AdminUserController::class, 'index'])->name('roles.index');
+    Route::patch('/roles/{user}', [AdminUserController::class, 'updateRole'])->name('roles.update');
 });
 
 
