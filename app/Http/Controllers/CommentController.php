@@ -48,6 +48,6 @@ class CommentController extends Controller
 
         $post->decrement('comments');
 
-        return back()->with('success', 'Комментарий удален.');
+        return back();
     }
 }

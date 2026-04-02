@@ -29,7 +29,19 @@
             <div class="card-body p-4">
 
                 {{-- Заголовок и контент --}}
-                <h3 class="card-title fw-bold mb-3">{{ $post->title }}</h3>
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h3 class="card-title fw-bold mb-0">{{ $post->title }}</h3>
+                    @auth
+                        @if(auth()->user()->isAdmin())
+                            <form action="{{ route('news.destroy', $post) }}" method="POST"
+                                  onsubmit="return confirm('Удалить пост?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Удалить пост</button>
+                            </form>
+                        @endif
+                    @endauth
+                </div>
                 <p class="card-text text-secondary mb-4" style="white-space: pre-line;">
                     {{ $post->content }}
                 </p>
@@ -98,7 +110,7 @@
                                     <form action="{{ route('comments.destroy', ['post' => $post, 'comment' => $comment]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-link text-danger p-0 text-decoration-none small">Удалить</button>
+                                        <button type="submit" class="btn btn-link text-danger p-0 text-decoration-none small">Удалить комментарий</button>
                                     </form>
                                 @endif
                             @endauth
