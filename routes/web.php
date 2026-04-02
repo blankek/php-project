@@ -45,14 +45,18 @@ Route::post('/reg', [UserController::class, 'postReg']);
 Route::get('/logout', [UserController::class, 'getLogout'])->name('logout');
 
 // админка
-Route::prefix('admin')->name('admin.')->middleware('admin.editor')->group(function () {
-    //посты
-    Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation.index');
-    Route::post('/moderation/{post}/approve', [ModerationController::class, 'approve'])->name('moderation.approve');
-    Route::post('/moderation/{post}/reject', [ModerationController::class, 'reject'])->name('moderation.reject');
-    //роли
-    Route::get('/roles', [AdminUserController::class, 'index'])->name('roles.index');
-    Route::patch('/roles/{user}', [AdminUserController::class, 'updateRole'])->name('roles.update');
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::middleware('admin.moderator')->group(function () {
+        Route::get('/moderation', [ModerationController::class, 'index'])->name('moderation.index');
+        Route::post('/moderation/{post}/approve', [ModerationController::class, 'approve'])->name('moderation.approve');
+        Route::post('/moderation/{post}/reject', [ModerationController::class, 'reject'])->name('moderation.reject');
+    });
+
+    Route::middleware('admin')->group(function () {
+        Route::get('/roles', [AdminUserController::class, 'index'])->name('roles.index');
+        Route::patch('/roles/{user}', [AdminUserController::class, 'updateRole'])->name('roles.update');
+    });
 });
 
 
