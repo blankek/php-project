@@ -156,6 +156,15 @@ class PostController extends Controller
         return view('news.index', compact('posts'));
     }
 
+    public function destroy(Post $post)
+    {
+        abort_unless(auth()->check() && auth()->user()->isAdmin(), 403);
+
+        $post->delete();
+
+        return back()->with('success', 'Пост удалён.');
+    }
+
     public function like(Post $post)
     {
         $user = auth()->user();

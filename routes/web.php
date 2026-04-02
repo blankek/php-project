@@ -19,6 +19,7 @@ Route::get('/news', [PostController::class, 'newsPage'])->name('news.index');
 Route::get('/news/create', [PostController::class, 'create'])->name('news.create');
 Route::post('/news', [PostController::class, 'store'])->name('news.store');
 Route::post('/news/{post}/submit', [PostController::class, 'submit'])->name('news.submit');
+Route::delete('/news/{post}', [PostController::class, 'destroy'])->name('news.destroy');
 Route::get('/news/{post}/edit', [PostController::class, 'edit'])->name('news.edit');
 Route::put('/news/{post}', [PostController::class, 'update'])->name('news.update');
 
