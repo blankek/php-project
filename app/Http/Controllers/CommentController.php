@@ -30,7 +30,7 @@ class CommentController extends Controller
 
         $post->increment('comments');
 
-        return back()->with('success', 'Комментарий добавлен.');
+        return back();
     }
 
    public function destroy(Request $request, Post $post, Comment $comment): RedirectResponse
