@@ -7,9 +7,6 @@
         <span class="badge bg-primary rounded-pill px-3 py-2">{{ $posts->total() }} на проверке</span>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success border-0 shadow-sm rounded-3 mb-4">{{ session('success') }}</div>
-    @endif
     @if(session('info'))
         <div class="alert alert-info border-0 shadow-sm rounded-3 mb-4">{{ session('info') }}</div>
     @endif
@@ -31,7 +28,7 @@
                                     <span class="badge bg-warning text-dark rounded-pill px-3 py-1">Ожидает проверки</span>
                                 </div>
                                 <p class="card-text text-secondary mb-4" style="white-space: pre-line;">{{ Str::limit($post->content, 300) }}</p>
-                                
+
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="small text-muted">
                                         <i class="far fa-clock me-1"></i>Создано: {{ $post->created_at->format('d.m.Y H:i') }}
