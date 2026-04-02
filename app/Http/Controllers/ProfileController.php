@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -12,6 +13,11 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         return view('profile.index', compact('user'));
+    }
+
+    public function show(User $user)
+    {
+        return view('profile.show', compact('user'));
     }
 
     public function update(Request $request)

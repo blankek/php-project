@@ -63,6 +63,7 @@ class PostController extends Controller
             : 'draft';
 
         Post::create([
+            'user_id' => auth()->id(),
             'title' => $validated['title'],
             'content' => $validated['content'],
             'picture' => $picturePath,
@@ -109,7 +110,7 @@ class PostController extends Controller
     public function newsPage()
     {
         $posts = Post::published()
-            ->with(['postComments.user'])
+            ->with(['user', 'postComments.user'])
             ->orderBy('published_at', 'desc')
             ->get();
 

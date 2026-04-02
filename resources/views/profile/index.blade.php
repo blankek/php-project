@@ -101,6 +101,8 @@
     </style>
 
     <script>
+        let avatarFile = null;
+
         async function previewAvatar(input) {
             const file = input.files[0];
 

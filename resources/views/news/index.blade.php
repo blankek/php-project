@@ -41,6 +41,20 @@
                     {{ $post->content }}
                 </p>
 
+                {{-- Автор --}}
+                @if($post->user)
+                    <p class="text-muted small mb-3">
+                        Автор:
+                        @auth
+                            <a href="{{ route('profile.show', $post->user) }}" class="text-primary text-decoration-none fw-semibold">
+                                {{ $post->user->login }}
+                            </a>
+                        @else
+                            <span class="fw-semibold">{{ $post->user->login }}</span>
+                        @endauth
+                    </p>
+                @endif
+
                 {{-- Метки: дата, лайки, комментарии --}}
                 <div class="d-flex align-items-center gap-3 mb-4">
                     <span class="badge bg-light text-secondary px-3 py-2 rounded-pill">
