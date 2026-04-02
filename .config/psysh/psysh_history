@@ -38,3 +38,10 @@ $user->role = 'editor';
 $user->save();
 $user->role = 'admin';
 $user->save();
+$user->role = 'moderator';
+$user->save();
+учше
+exit
+$user = App\Models\User::where('login', 'Gasparo')->first();
+$user->role = 'admin';
+$user->save();
