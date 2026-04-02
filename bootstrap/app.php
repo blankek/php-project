@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'admin.editor' => AdminOrEditor::class,
+            'admin' => AdminOnly::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
