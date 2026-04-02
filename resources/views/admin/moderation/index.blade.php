@@ -36,11 +36,11 @@
                                     <div class="d-flex gap-2">
                                         <form action="{{ route('admin.moderation.approve', $post) }}" method="POST">
                                             @csrf
-                                            <button type="submit" class="btn btn-success px-4 rounded-pill">Опубликовать</button>
+                                            <button type="submit" class="btn btn-success px-4 rounded-pill">Принять</button>
                                         </form>
                                         <form action="{{ route('admin.moderation.reject', $post) }}" method="POST">
                                             @csrf
-                                            <button type="submit" class="btn btn-outline-danger px-4 rounded-pill">Отклонить</button>
+                                            <button type="submit" class="btn btn-outline-danger px-4 rounded-pill">Отказать</button>
                                         </form>
                                     </div>
                                 </div>

@@ -81,6 +81,45 @@ class PostController extends Controller
         );
     }
 
+    public function edit(Post $post)
+    {
+        if (!in_array($post->status, ['draft', 'returned'])) {
+            return redirect()->route('news.index')->with('error', 'Этот пост нельзя редактировать.');
+        }
+
+        return view('news.edit', compact('post'));
+    }
+
+    public function update(Request $request, Post $post)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'picture' => 'nullable|file|image', 
+        ]);
+
+        $data = [
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+        ];
+
+        if ($request->hasFile('picture')) {
+            $data['picture'] = $request->file('picture')->store('posts', 'public');
+        }
+
+        if ($request->input('action') === 'moderation') {
+            $data['status'] = 'pending';
+        } else {
+            $data['status'] = 'draft';
+        }
+
+        $post->update($data);
+
+        $message = ($data['status'] === 'pending') ? 'Новость отправлена на модерацию!' : 'Изменения сохранены!';
+
+        return redirect()->route('news.create')->with('success', $message);
+    }
+
     public function submit(Post $post)
     {
         abort_unless(

@@ -16,13 +16,6 @@
         @endauth
     </div>
 
-    {{-- Сообщение об успехе --}}
-    @if(session('success'))
-        <div class="alert alert-success border-0 shadow-sm rounded-3 mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
-
     {{-- Список новостей --}}
     @forelse ($posts as $post)
         <div class="card mb-4 border-0 shadow-sm rounded-4 overflow-hidden">

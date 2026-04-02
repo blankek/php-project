@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <a href="{{ url('/') }}" class="btn btn-primary rounded-pill">
+        <a href="{{ url('/news') }}" class="btn btn-primary rounded-pill">
             <i class="fas fa-home me-1"></i> На главную
         </a>
         <a href="{{ url('/errors') }}" class="btn btn-outline-secondary rounded-pill ms-2">
