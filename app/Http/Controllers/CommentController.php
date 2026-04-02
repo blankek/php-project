@@ -13,6 +13,11 @@ class CommentController extends Controller
     {
         abort_unless($post->status === 'published', 404);
 
+        abort_unless(
+            $request->user()?->canInteract(),
+            403
+        );
+
         $validated = $request->validate([
             'body' => 'required|string|max:2000',
         ]);
@@ -28,15 +33,19 @@ class CommentController extends Controller
         return back()->with('success', 'Комментарий добавлен.');
     }
 
-    public function destroy(Request $request, Post $post, Comment $comment): RedirectResponse
+   public function destroy(Request $request, Post $post, Comment $comment): RedirectResponse
     {
         abort_unless($comment->post_id === $post->id, 404);
 
-        if ($comment->user_id !== (int) $request->user()->id) {
+        if (
+            $comment->user_id !== (int) $request->user()->id
+            && !$request->user()->isAdmin()
+        ) {
             abort(403);
         }
 
         $comment->delete();
+
         $post->decrement('comments');
 
         return back()->with('success', 'Комментарий удален.');

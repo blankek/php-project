@@ -18,47 +18,83 @@ class PostController extends Controller
 
     public function create()
     {
-        $drafts = Post::draft()->latest()->get();
-        $pendingPosts = Post::pending()->latest()->get();
+        abort_unless(
+            auth()->check() && auth()->user()->canEdit(),
+            403
+        );
 
-        return view('news.create', compact('drafts', 'pendingPosts'));
+        $drafts = Post::draft()
+            ->latest()
+            ->get();
+
+        $pendingPosts = Post::pending()
+            ->latest()
+            ->get();
+
+        return view(
+            'news.create',
+            compact('drafts', 'pendingPosts')
+        );
     }
 
     public function store(Request $request)
     {
+        abort_unless(
+            auth()->check() && auth()->user()->canEdit(),
+            403
+        );
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'picture' => 'nullable|file|image', 
+            'picture' => 'nullable|file|image',
         ]);
 
         $picturePath = null;
+
         if ($request->hasFile('picture')) {
-            $picturePath = $request->file('picture')->store('posts', 'public');
+            $picturePath = $request
+                ->file('picture')
+                ->store('posts', 'public');
         }
 
-        $status = $request->input('action') === 'moderation' ? 'pending' : 'draft';
+        $status = $request->input('action') === 'moderation'
+            ? 'pending'
+            : 'draft';
 
-        $post = Post::create([
+        Post::create([
             'title' => $validated['title'],
             'content' => $validated['content'],
             'picture' => $picturePath,
-            'status' => $status, 
+            'status' => $status,
             'likes' => 0,
             'comments' => 0,
             'published_at' => null,
         ]);
 
-         $message = $status === 'pending' ? 'Новость отправлена на модерацию!' : 'Новость сохранена как черновик!';
-
-        return back()->with('success', $message);
+        return back()->with(
+            'success',
+            $status === 'pending'
+                ? 'Новость отправлена на модерацию!'
+                : 'Новость сохранена как черновик!'
+        );
     }
 
     public function submit(Post $post)
     {
-        $post->update(['status' => 'pending']);
+        abort_unless(
+            auth()->check() && auth()->user()->canEdit(),
+            403
+        );
 
-        return back()->with('success', 'Новость отправлена на модерацию!');
+        $post->update([
+            'status' => 'pending'
+        ]);
+
+        return back()->with(
+            'success',
+            'Новость отправлена на модерацию!'
+        );
     }
 
     public function show($id)
@@ -78,6 +114,25 @@ class PostController extends Controller
             ->get();
 
         return view('news.index', compact('posts'));
+    }
+
+    public function like(Post $post)
+    {
+        $user = auth()->user();
+
+        if (!$user->canInteract()) {
+            abort(403);
+        }
+
+        if ($post->isLikedBy($user)) {
+            // Если уже лайкнул — убрать лайк
+            $post->likesRelation()->detach($user->id);
+        } else {
+            // Если ещё не лайкнул — добавить лайк
+            $post->likesRelation()->attach($user->id);
+        }
+
+        return back();
     }
 
 

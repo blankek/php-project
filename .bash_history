@@ -44,5 +44,12 @@ php artisan migrate
 php artisan migrate
 php artisan tinker
 exit
+rm /var/www/database/database.sqlite
+touch /var/www/database/database.sqlite
+php artisan migrate
+exit
+rm /var/www/database/database.sqlite
+touch /var/www/database/database.sqlite
+php artisan migrate:fresh
 php artisan tinker
 exit

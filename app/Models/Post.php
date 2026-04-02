@@ -43,6 +43,16 @@ class Post extends Model
         return $this->hasMany(Comment::class)->latest();
     }
 
+    public function likesRelation()
+    {
+        return $this->belongsToMany(User::class, 'post_user_likes')->using(PostLike::class);
+    }
+
+    public function isLikedBy(User $user): bool
+    {
+        return $this->likesRelation()->where('user_id', $user->id)->exists();
+    }
+
     public function scopeDraft($query)
     {
         return $query->where('status', 'draft');
